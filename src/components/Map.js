@@ -1,4 +1,5 @@
 import styles from './Map.scss';
+import debounce from 'lodash/debounce';
 import React, { PropTypes, Component } from 'react';
 import { observer } from 'mobx-react';
 import { withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps";
@@ -7,7 +8,7 @@ import mapStyle from '../constants/mapStyle.json';
 import busStopIcon from '../assets/images/bus_stop.svg';
 import busStationIcon from '../assets/images/bus_station.svg';
 
-const RootMap = withGoogleMap(({ center, markers }) => {
+const RootMap = withGoogleMap(({ center, markers, onCenterChanged }) => {
   return (
     <GoogleMap
       defaultZoom={15}
@@ -17,6 +18,7 @@ const RootMap = withGoogleMap(({ center, markers }) => {
         streetViewControl: false,
       }}
       center={{ lat: center.lat, lng: center.lng }}
+      onCenterChanged={onCenterChanged}
     >
       {markers}
       {center && (
@@ -30,14 +32,27 @@ const RootMap = withGoogleMap(({ center, markers }) => {
 
 @observer
 class Map extends Component {
+
+  constructor() {
+    super();
+
+    this.handleCenterChanged = debounce(this.handleCenterChanged.bind(this), 250);
+  }
+
   handleMarkerClick(busId, marker) {
     console.log(busId, marker.latLng);
   }
 
+  handleCenterChanged(e) {
+    const { map } = this.refs.glmap.state;
+    const center = map.getCenter().toJSON();
+    const bounds = map.getBounds();
+    
+    this.props.onCenterChanged(center, bounds);
+  };
+
   render() {
     const { center, busStops } = this.props;
-
-    console.log(center);
 
     const markers = busStops.map(bus => (
       <Marker
@@ -55,6 +70,7 @@ class Map extends Component {
     return (
       <div className={styles.root}>
         <RootMap
+          ref="glmap"
           containerElement={
             <div className={styles.container} />
           }
@@ -64,6 +80,7 @@ class Map extends Component {
           center={center}
           content="I'm here!"
           markers={markers}
+          onCenterChanged={this.handleCenterChanged}
         />
       </div>
     );
@@ -73,6 +90,7 @@ class Map extends Component {
 Map.propTypes = {
   center: PropTypes.object,
   busStops: PropTypes.object,
+  onCenterChanged: PropTypes.func,
 };
 
 export default Map;

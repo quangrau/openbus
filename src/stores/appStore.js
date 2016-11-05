@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { action, observable } from 'mobx';
 import { getBusStopsInBounds } from '../api/bus';
 
 class AppStore {
@@ -9,10 +9,12 @@ class AppStore {
     lng: 0,
   };
 
-  updateCenter(lat, lng) {
+  @action
+  updateCenter({ lat, lng }) {
     this.center = { lat, lng };
   }
 
+  @action
   addBusStop(busInfo) {
     this.busStops.push(busInfo);
   }
@@ -21,18 +23,18 @@ class AppStore {
     this.busStops = busStops;
   }
 
-  getBusStops() {
-    const from = {
-      lat: this.center.lat - 0.01,
-      lng: this.center.lng - 0.01
+  getBusStops(from, to) {
+    const fromLatLng = {
+      lat: from ? from.lat : this.center.lat - 0.01,
+      lng: from ? from.lng : this.center.lng - 0.01
     };
-    const to = {
-      lat: this.center.lat + 0.01,
-      lng: this.center.lng + 0.01,
+    const toLatLng = {
+      lat: to? to.lat : this.center.lat + 0.01,
+      lng: to? to.lng : this.center.lng + 0.01,
     };
 
     // Call API
-    getBusStopsInBounds(from, to)
+    getBusStopsInBounds(fromLatLng, toLatLng)
       .then(busStops => this.updateBusStops(busStops));
   }
 }

@@ -22,7 +22,7 @@ class App extends Component {
     geolocation.getCurrentPosition(({ coords }) => {
       console.log(coords);
       // Update current location
-      appStore.updateCenter(coords.latitude, coords.longitude);
+      appStore.updateCenter({ lat: coords.latitude, lng: coords.longitude });
       // Load busStops nearby
       appStore.getBusStops();
     }, (reason) => {
