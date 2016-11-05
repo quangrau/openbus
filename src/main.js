@@ -1,5 +1,29 @@
+import "purecss/build/pure-min.css"
+import "./main.css";
+
 import React from 'react';
 import { render } from 'react-dom';
-import App from './components/App';
+import { AppContainer } from 'react-hot-loader';
+import Root from './components/Root';
 
-render(<App />, document.getElementById('app'));
+const rootElement = document.getElementById('root');
+
+render(
+  <AppContainer>
+    <Root />
+  </AppContainer>,
+  rootElement
+);
+
+if (module.hot) {
+  module.hot.accept('./components/Root', () => {
+    const NewApp = require('./components/Root').default;
+
+    render(
+      <AppContainer>
+        <Root />
+      </AppContainer>,
+      rootElement
+    );
+  });
+}

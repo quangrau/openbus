@@ -1,0 +1,12 @@
+@import '../assets/scss/_colors.scss';
+
+.root {
+  height: 64px;
+  line-height: 48px;
+  overflow: hidden;
+  background: $primary-color;
+}
+
+.root a {
+  color: $white-color;
+}

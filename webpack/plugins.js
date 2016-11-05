@@ -1,8 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
+const autoprefixer = require('autoprefixer');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-// const postcss_cssnext = require('postcss-cssnext');
 
 const DEBUG = process.env.NODE_ENV === 'development';
 const TEST = process.env.NODE_ENV === 'test';
@@ -13,17 +13,19 @@ const plugins = [
     minimize: !DEBUG,
     options: {
       context: __dirname,
-      // postcss: [
-        // postcss_cssnext({
-          // browsers: ['last 2 version', 'ie >= 11']
-        // })
-      // ]
+      postcss: function() {
+        return [autoprefixer];
+      },
     }
   }),
   new webpack.optimize.CommonsChunkPlugin({
     name: 'vendors',
     filename: 'vendors.bundle.js',
     minChunks: Infinity,
+  }),
+  new ExtractTextPlugin({
+    filename: 'css/style.css',
+    allChunks: true,
   }),
 ];
 
@@ -33,9 +35,6 @@ if (DEBUG) {
   );
 } else if (!TEST) {
   plugins.push(
-    new ExtractTextPlugin(cssBundle, {
-      allChunks: true,
-    }),
     new webpack.optimize.UglifyJsPlugin({
       sourceMap: true,
     }),
@@ -51,7 +50,7 @@ if (DEBUG) {
 
 plugins.push(
   new HtmlWebpackPlugin({
-    template: 'index.html',
+    template: '../index.html',
   })
 );
 

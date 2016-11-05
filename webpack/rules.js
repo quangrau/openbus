@@ -13,35 +13,32 @@ const rules = [
     ],
   },
   {
-    test: /\.scss$/,
+    test: /\.css$/,
     use: [
+      'style-loader',
+      {
+        loader: 'css-loader',
+        options: {
+          importLoaders: 1
+        }
+      },
       {
         loader: 'postcss-loader',
         options: {
-          plugins: [],
+          plugins: function() {
+            return [
+              require('autoprefixer')()
+            ];
+          }
         }
-      },
-      'sass-loader'
+      }
     ]
   },
   {
-    test: /\.css$/,
+    test: /\.scss$/,
     loader: ExtractTextPlugin.extract({
       fallbackLoader: 'style-loader',
-      loader: [
-        {
-          loader: 'css-loader',
-          query: {
-            modules: true
-          }
-        },
-        {
-          loader: 'postcss-loader'
-        },
-        {
-          loader: 'sass-loader'
-        }
-      ]
+      loader: 'css?module&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass-loader'
     })
   },
   {
@@ -65,6 +62,14 @@ const rules = [
           limit: 1,
           name: 'assets/[name].[ext]'
         }
+      }
+    ]
+  },
+  {
+    test: /\.json$/,
+    loader: [
+      {
+        loader: 'json-loader',
       }
     ]
   }

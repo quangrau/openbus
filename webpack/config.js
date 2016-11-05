@@ -3,7 +3,8 @@ const rules = require('./rules');
 const plugins = require('./plugins');
 
 const DEBUG = process.env.NODE_ENV === 'development';
-const buildDir = 'dist';
+
+const buildDir = './dist';
 const srcDir = './src';
 
 const config = {
@@ -26,6 +27,7 @@ const config = {
       'webpack/hot/only-dev-server',
 
       //the entry point of our app
+      './vendor.js',
       './main.js',
     ],
 
@@ -36,6 +38,7 @@ const config = {
   },
 
   output: {
+    publicPath: '',
     path: path.resolve(buildDir),
     filename: path.join('js', 'main.bundle.js'),
   },
@@ -60,7 +63,7 @@ const config = {
       'Access-Control-Allow-Origin': '*'
     },
     hot: true,
-    noInfo: false,
+    noInfo: true,
     inline: true,
     stats: {
       colors: true
