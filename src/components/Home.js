@@ -33,6 +33,7 @@ class Home extends Component {
         <BusStopInfo
           busStop={appStore.selectedBusStop}
           predictions={appStore.predictions}
+          isLoadPredictions={appStore.isLoadPredictions}
         />
       </div>
     );

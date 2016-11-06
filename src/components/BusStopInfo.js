@@ -3,7 +3,11 @@ import React, { PropTypes } from 'react';
 import { observer } from 'mobx-react';
 import BusStopPredictions from './BusStopPredictions';
 
-const BusStopInfo = observer(({ busStop, predictions }) => {
+const Loader = () => (
+ <div className={`l-box text-center ${styles.loader}`}>Loading...</div>
+);
+
+const BusStopInfo = observer(({ busStop, predictions, isLoadPredictions }) => {
   if (!busStop) return <div className={styles.empty} />;
 
   const fullAddress = [busStop.AddressNo, busStop.Street, busStop.Ward, busStop.Zone]
@@ -32,22 +36,10 @@ const BusStopInfo = observer(({ busStop, predictions }) => {
         </div>
       </div>
       <div className={styles.main}>
-        <div className="pure-g">
-          <div className="pure-u-1-2">
-            <div className="l-box text-left">
-              <div>Tuyến xe</div>
-            </div>
-          </div>
-
-          <div className="pure-u-1-2">
-            <div className="l-box text-right">
-            </div>
-          </div>
-        </div>
-
-        <BusStopPredictions
-          predictions={predictions}
-        />
+        {isLoadPredictions
+          ? <Loader />
+          : <BusStopPredictions predictions={predictions} />
+        }
       </div>
     </div>
   );

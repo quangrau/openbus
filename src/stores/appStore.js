@@ -2,6 +2,8 @@ import { action, observable, computed } from 'mobx';
 import { getBusStopsInBounds, getPredictBusStop } from '../api/bus';
 
 class AppStore {
+  @observable isLoadPredictions = false;
+  @observable isLoadBusStops = false;
 
   @observable selectedStopId = null;
   @observable predictions = [];
@@ -38,20 +40,31 @@ class AppStore {
       lng: to? to.lng : this.center.lng + 0.01,
     };
 
+    // Update loading state
+    this.isLoadBusStops = true;
+
     // Call API
     getBusStopsInBounds(fromLatLng, toLatLng)
       .then(action('getBusStops-callback',
-        busStops => this.updateBusStops(busStops)
-      ));
+        busStops => {
+          this.updateBusStops(busStops);
+          this.isLoadBusStops = false;
+        }));
   }
 
   @action
   updateSelectedStopId(stopId) {
     this.selectedStopId = stopId;
 
+    // Update loading state
+    this.isLoadPredictions = true;
+
     // call API
     getPredictBusStop(stopId)
-      .then(predictions => this.updatePredictions(predictions));
+      .then(action('getPredictBusSto', predictions => {
+        this.updatePredictions(predictions);
+        this.isLoadPredictions = false;
+      }));
   }
 }
 

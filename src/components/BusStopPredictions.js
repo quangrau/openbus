@@ -31,8 +31,8 @@ const BusInfo = ({ data }) => (
       <div className={styles.root_bus_number}>
         <div>Biển số <strong>{data.v}</strong></div>
         <div>
-          <small>Trạm kế tiếp: còn </small>
-          <small>{parseTime(data.t)}</small>
+          <small>Cách trạm {toKm(data.d)} • </small>
+          <small>Còn {parseTime(data.t)}</small>
         </div>
       </div>
     </div>
@@ -47,6 +47,17 @@ const BusInfo = ({ data }) => (
 const BusStopPredictions = observer(({ predictions }) => {
   return (
     <div className={styles.root}>
+      <div className="pure-g">
+        <div className="pure-u-1-2">
+          <div className="l-box text-left">
+            <div>Lộ trình</div>
+          </div>
+        </div>
+        <div className="pure-u-1-2">
+          <div className="l-box text-right"></div>
+        </div>
+      </div>
+
       {predictions.map(data => (
         <div key={data.r} className={styles.item}>
           <div className={`l-box pure-g ${styles.root_r}`}>
