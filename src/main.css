@@ -1,3 +1,23 @@
 body, html, #root {
   height: 100%;
 }
+
+html, button, input, select, textarea,
+.pure-g [class *= "pure-u"] {
+  /* Set your content font stack here: */
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Utils */
+.l-box {
+  padding: 1em;
+}
+.text-left {
+  text-align: left;
+}
+.text-center {
+  text-align: center;
+}
+.text-right {
+  text-align: right;
+}

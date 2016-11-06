@@ -1,6 +1,7 @@
 import styles from './App.scss';
 import React, { PropTypes, Component } from 'react';
 import { observer } from 'mobx-react';
+import DevTools from 'mobx-react-devtools';
 import appStore from '../stores/appStore';
 import Header from './Header';
 import Footer from './Footer';
@@ -39,6 +40,7 @@ class App extends Component {
           {React.cloneElement(this.props.children, { appStore })}
         </div>
         <Footer />
+        <DevTools />
       </div>
     );
   }

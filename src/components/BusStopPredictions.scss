@@ -1,0 +1,84 @@
+@import '../assets/scss/_colors.scss';
+
+$icon-size: 30px;
+
+.root {
+  color: $dark-color;
+}
+
+.item {
+  padding-bottom: 1em;
+  position: relative;
+}
+
+.root_r {
+  padding: .5em 1em !important;
+}
+
+.root_r_icon {
+  padding-left: 1em;
+}
+
+.root_rNo {
+  width: $icon-size;
+  height: $icon-size;
+  line-height: $icon-size;
+  text-align: center;
+  font-size: 68%;
+  border-radius: 50%;
+  background: $primary-color;
+  color: $secondary-color;
+  position: absolute;
+  z-index: 1;
+  // box-shadow: 0 0 0 4px white, inset 0 2px 0 rgba(0, 0, 0, 0.08), 0 3px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.root_rN {
+  color: $primary-color;
+  line-height: $icon-size;
+}
+.root_rN small {
+  color: $green-color;
+}
+
+.root_bus {
+  padding: .5em 1em !important;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 30px;
+    height: 50%;
+    width: 1px;
+    background: #DDD;
+  }
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+.root_bus_icon {
+  @extend .root_rNo;
+  background: $white-color;
+  color: $secondary-color;
+  border: 1px solid $blue-color;
+  & img {
+    width: 20px;
+    padding: 5px 0;
+  }
+}
+
+.root_bus_number {
+  line-height: 1;
+  & strong {
+  }
+  & small {
+  }
+}
+
+.root_bus_d {
+  text-align: right;
+  line-height: $icon-size;
+}

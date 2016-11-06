@@ -40,14 +40,14 @@ class Map extends Component {
   }
 
   handleMarkerClick(busId, marker) {
-    console.log(busId, marker.latLng);
+    this.props.onBusStopSelected(busId, marker);
   }
 
   handleCenterChanged(e) {
     const { map } = this.refs.glmap.state;
     const center = map.getCenter().toJSON();
     const bounds = map.getBounds();
-    
+
     this.props.onCenterChanged(center, bounds);
   };
 
@@ -91,6 +91,7 @@ Map.propTypes = {
   center: PropTypes.object,
   busStops: PropTypes.object,
   onCenterChanged: PropTypes.func,
+  onBusStopSelected: PropTypes.func,
 };
 
 export default Map;
